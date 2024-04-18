@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,5 +47,12 @@ public class ProductController {
         product.setName(data.name());
         product.setPrice_in_cents(data.price_in_cents());
         return ResponseEntity.status(201).build();
+    }
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<String> deleteProduct(@PathVariable String id) {
+        Product product = repository.getReferenceById(id);
+        product.setActive(false);
+        return ResponseEntity.noContent().build();
     }
 }
